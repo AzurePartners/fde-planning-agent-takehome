@@ -1,0 +1,41 @@
+{
+  "_comment": [
+    "Replay fixtures for llm_client.py. Two layers:",
+    "  exact    - sha256(request)[:16] -> response text. Populated by LLM_MODE=record.",
+    "  defaults - intent-routed fallbacks. A cassette miss must never break a run.",
+    "A fixture value is either a plain string, or {rules:[{contains,reply}], default}.",
+    "Tokens {{goal}} and {{step_goal}} are substituted from the live request."
+  ],
+  "exact": {},
+  "defaults": {
+    "planner": "{\n  \"steps\": [\n    {\"n\": 1, \"goal\": \"Search the web for current, practical information about: {{goal}}\", \"tool_hint\": \"web_search\"},\n    {\"n\": 2, \"goal\": \"Read the most promising source in full for concrete details, hours and prices.\", \"tool_hint\": \"fetch_url\"},\n    {\"n\": 3, \"goal\": \"Generate one cover image for the finished plan.\", \"tool_hint\": \"generate_image\"},\n    {\"n\": 4, \"goal\": \"Write the final plan for the user.\", \"tool_hint\": \"none\"}\n  ]\n}",
+    "reviser": "{\n  \"steps\": [\n    {\"n\": 3, \"goal\": \"Find indoor alternatives that fit the same budget and timing.\", \"tool_hint\": \"web_search\"},\n    {\"n\": 4, \"goal\": \"Generate one cover image for the revised, rain-proof plan.\", \"tool_hint\": \"generate_image\"},\n    {\"n\": 5, \"goal\": \"Write the final plan, swapping outdoor stops for indoor ones.\", \"tool_hint\": \"none\"}\n  ]\n}",
+    "observer": {
+      "rules": [
+        {
+          "contains": "Heavy rain is forecast",
+          "reply": "surprise: heavy rain is forecast all day, the outdoor stops need rethinking"
+        },
+        {
+          "contains": "no usable results",
+          "reply": "thin: the search came back empty, downstream steps have little to work with"
+        }
+      ],
+      "default": "ok: the step produced a usable result for the next step"
+    },
+    "executor": {
+      "web_search": {
+        "rules": [
+          {
+            "contains": "indoor",
+            "reply": "Three indoor options come up repeatedly and all fit the stated budget: a covered market hall open 10:00-20:00, a national museum with a 500-unit general admission, and a large public library with a free reading terrace [https://example.org/city-guide]. All three are within a 15-minute walk of the main station [https://example.org/transit]."
+          }
+        ],
+        "default": "The most commonly recommended stops are the old-town market, the riverside park walk, and the observation deck, which together fit inside the stated budget [https://example.org/city-guide]. Opening hours cluster around 09:00-18:00 and the transit day-pass covers all three [https://example.org/transit]. One thing the plan did not account for: Heavy rain is forecast for the whole day."
+      },
+      "fetch_url": "The page confirms the details from the search: general admission is 500 units, the site opens at 09:00 and last entry is 17:30, and the day-pass is accepted at the gate [https://example.org/city-guide]. It also notes that the outdoor terrace closes in bad weather.",
+      "generate_image": "Cover image generated: a warm, illustrated poster of the itinerary's main landmark under an overcast sky.",
+      "none": "## Your plan\n\n**Morning (09:00-12:00)**\n- Start at the covered market hall. Open from 10:00; budget roughly 800 units for breakfast and a snack [https://example.org/city-guide].\n- Walk 12 minutes to the museum. General admission 500 units, quietest before 11:00.\n\n**Afternoon (12:00-16:00)**\n- Lunch near the museum, around 900 units.\n- Public library reading terrace, free, covered seating if the weather turns [https://example.org/city-guide].\n\n**Evening (16:00-19:00)**\n- Observation deck if the sky clears, otherwise the market hall reopens for evening stalls.\n- Transit day-pass covers every leg above [https://example.org/transit].\n\n**Budget check:** roughly 3,200 units of the stated allowance, leaving headroom for one unplanned stop.\n\n**Note:** heavy rain is forecast, so the outdoor legs are marked optional and every one has an indoor substitute."
+    }
+  }
+}

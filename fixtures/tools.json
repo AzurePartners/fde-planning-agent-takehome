@@ -1,0 +1,35 @@
+{
+  "_comment": [
+    "Replay fixtures for tools.py, used when TOOLS_MODE=replay (the default).",
+    "Each tool has an optional 'exact' map (normalised argument -> result) and a",
+    "'default' that is served on a miss, so a run never depends on the live web."
+  ],
+  "web_search": {
+    "exact": {
+      "empty query test": []
+    },
+    "default": [
+      {
+        "title": "City guide: what to see, hours and prices",
+        "url": "https://example.org/city-guide",
+        "snippet": "The old-town market hall opens at 10:00. Museum general admission is 500 units. The observation deck is outdoor-only and closes in bad weather."
+      },
+      {
+        "title": "Transit day-pass: coverage and cost",
+        "url": "https://example.org/transit",
+        "snippet": "A single day-pass covers metro, tram and the airport shuttle. Valid until midnight on the day of first use."
+      },
+      {
+        "title": "Seven-day forecast",
+        "url": "https://example.org/forecast",
+        "snippet": "Heavy rain expected through the day, easing after 19:00. Outdoor attractions may close early."
+      }
+    ]
+  },
+  "fetch_url": {
+    "exact": {},
+    "default": {
+      "text": "City guide. The covered market hall is open 10:00-20:00 daily and has around forty stalls. The national museum charges 500 units for general admission, with last entry at 17:30; it is quietest before 11:00. The observation deck is outdoor-only and closes when wind or rain is heavy. The transit day-pass is accepted at every venue listed on this page. Heavy rain is forecast for the whole day, so the outdoor terrace may be shut."
+    }
+  }
+}

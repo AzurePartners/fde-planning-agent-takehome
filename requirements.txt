@@ -1,0 +1,11 @@
+# Core -- everything below is needed to run the app and the tests offline.
+streamlit>=1.30.0,<2.0.0
+python-dotenv>=1.0.0
+pytest>=7.0.0
+
+# Only needed for LLM_MODE=live / LLM_MODE=record (bring your own API key).
+openai>=1.40.0
+
+# Only needed for TOOLS_MODE=live (real web search and real page fetches).
+ddgs>=9.0.0
+requests>=2.31.0
