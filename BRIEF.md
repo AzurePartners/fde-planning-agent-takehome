@@ -105,13 +105,14 @@ testing judgment, and judgment is what survives the tooling.
 session: walk us through what you built, then extend it live with us. Submit
 work you can defend.
 
-**Ask questions.** If something is genuinely ambiguous, email us. That is the
-job. If you would rather make a call and move on, do that and write it down.
-Both are fine; silently guessing and not saying so is not.
+**Ask questions.** If something is genuinely ambiguous, email
+usman.asif@azurepartners.ai. That is the job. If you would rather make a call
+and move on, do that and write it down. Both are fine; silently guessing and
+not saying so is not.
 
 ## Submitting
 
-A zip or a private repo containing:
+Email usman.asif@azurepartners.ai a zip or a link to a private repo containing:
 
 - your working tree, `.env` excluded
 - `DECISIONS.md`, filled in
